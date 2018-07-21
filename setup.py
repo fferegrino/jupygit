@@ -10,7 +10,7 @@ setup(
     url="https://github.com/fferegrino/jupygit",
     author="Antonio Feregrino",
     author_email="antonio.feregrino@gmail.com",
-    version="0.0.8",
+    version="0.0.11",
     packages=find_packages(),
     install_requires=[
         "jupyter==1"

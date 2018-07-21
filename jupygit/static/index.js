@@ -21,7 +21,7 @@ define([
             return;
         }
         Jupyter.toolbar.add_buttons_group([{
-            label: 'Prepare',
+            label: 'Prepare 4',
             icon: 'fa-git',
             help: 'Hola',
             callback: make_request

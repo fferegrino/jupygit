@@ -10,6 +10,14 @@ def load_jupyter_server_extension(nb_server_app):
          GitCleanHandler)
     ])
 
+def _jupyter_nbextension_paths():
+    """Required to load JS button"""
+    return [dict(
+        section="notebook",
+        src="static",
+        dest="jupygit",
+        require="jupygit/index")]
+
 def _jupyter_server_extension_paths():
     return [{
         "module": "jupygit"
