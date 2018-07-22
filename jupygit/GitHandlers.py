@@ -5,6 +5,21 @@ import os
 
 from notebook.base.handlers import IPythonHandler
 
+class GitRestoreHandler(IPythonHandler):
+
+    file_suffix = "-jupygit___.ipynb"
+
+    def post(self):
+        data = parse_qs(self.request.body.decode('utf8'))
+        dirty_path = data["path"][0]
+        
+        clean_path = dirty_path[:-len(self.file_suffix)] + ".ipynb"
+        os.remove(clean_path)
+
+        self.write({'status':200,'content':'Hola'})
+        self.flush()
+
+
 class GitCleanHandler(IPythonHandler):
 
     file_suffix = "-jupygit___.ipynb"
