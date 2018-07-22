@@ -36,6 +36,7 @@ define([
                     data: data,
                     success: function(d) {
                         alert("Now you can go ahead and commit your notebook! do not forget to press the button again when you are done")
+                        $("#jupygit-button span").text("Keep working");
                     }
                 });
             });
@@ -55,6 +56,7 @@ define([
                     Jupyter.notebook.rename(Jupyter.original_name).then(function (){
                         Jupyter.original_name = "";
                         alert("You can now keep working");
+                        $("#jupygit-button span").text("Prepare notebook");
                     });
                 }
             });
@@ -79,10 +81,12 @@ define([
             $([Jupyter.events]).on("app_initialized.NotebookApp", place_button);
             return;
         }
+
         Jupyter.toolbar.add_buttons_group([{
-            label: 'Prepare 4',
+            id: 'jupygit-button',
+            label: 'Prepare notebook',
             icon: 'fa-git',
-            help: 'Hola',
+            help: 'Clean and prepare your notebook to be commited to Git',
             callback: make_request
         }])
     }
