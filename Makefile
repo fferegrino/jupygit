@@ -1,9 +1,16 @@
-run: install
-	jupyter notebook
-install: clean
-	pip install -e .
-	jupyter serverextension enable --py jupygit --sys-prefix
-	jupyter nbextension install --py jupygit --sys-prefix
-	jupyter nbextension enable --py jupygit --sys-prefix
+.PHONY: help clean dev docs package test
+
+help:
+	@echo "This project assumes that an active Python virtualenv is present."
+	@echo "The following make targets are available:"
+	@echo "	 dev 	install all deps for dev env"
+
 clean:
-	find . -type d -name "__pycache__" -exec rm -rf {} +
+	rm -rf dist/*
+
+dev:
+	pip install -r requirements.txt
+
+package:
+	python setup.py sdist
+	python setup.py bdist_wheel
