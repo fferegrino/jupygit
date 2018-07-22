@@ -5,25 +5,53 @@ define([
     'base/js/dialog'
 ], function(Jupyter, $, utils, dialog) {
 
+    var file_suffix = "-jupygit___.ipynb";
+
+    Jupyter.original_name = "";
+
     function make_request() {
-        console.log("Cleaning notebook")
-        var clean_url = utils.url_path_join(utils.get_body_data('baseUrl'), 'git/clean')
-        console.log("Querying", Jupyter.notebook)
-        data = {
-            'name': Jupyter.notebook.notebook_name,
-            'path': Jupyter.notebook.notebook_path
-        }
-        console.log(data);
-        $.ajax({
-            type: "GET",
-            url: clean_url,
-            data: data,
-            success: function(data) {
-                console.log("Data: ", data)
-                dialog.modal(data)
+        if(Jupyter.original_name === "") {
+            var clean_url = utils.url_path_join(utils.get_body_data('baseUrl'), 'git/clean')
+            var cookies = getCookies(document.cookie);
+            var _xsrf = cookies["_xsrf"];
+            var notebook_path = Jupyter.notebook.notebook_path;
+            Jupyter.original_name = Jupyter.notebook.notebook_name;
+            var new_name = Jupyter.original_name.substring(0, Jupyter.original_name.length - 6) + file_suffix
+
+            data = {
+                'name': Jupyter.original_name,
+                'path': notebook_path
             }
-          });
+
+            Jupyter.notebook.rename(new_name).then(function (){
+                // Duplicate notebook:
+                $.ajax({
+                    type: "POST",
+                    headers: {
+                        "X-XSRFToken": cookies["_xsrf"]
+                    },
+                    url: clean_url,
+                    data: data,
+                    success: function(d) {
+                        alert("Now you can go ahead and commit your notebook! do not forget to press the button again when you are done")
+                    }
+                });
+            });
+        }
     }
+
+    function getCookies(cookie) {
+        var dictionary = {};
+        var parts = cookie.split(";")
+        
+        parts.forEach(function (s) {
+          var trimmed = s.trim();
+          var i = trimmed.indexOf("=");
+          dictionary[trimmed.slice(0, i)] = trimmed.slice(i + 1)
+        });
+        
+        return dictionary;
+      }
 
     function place_button() {
         if (!Jupyter.toolbar) {
