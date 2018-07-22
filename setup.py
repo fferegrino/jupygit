@@ -1,14 +1,14 @@
 import os
 import sys
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.command.install import install
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 # Package version
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 
 class VerifyVersionCommand(install):
     """Custom command to verify that the git tag matches our version"""
@@ -32,6 +32,7 @@ setup(
     description="Prepare your Notebooks to be pushed to GitHub",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    packages=find_packages(),
     include_package_data=True,
     cmdclass={
         'verify': VerifyVersionCommand,
