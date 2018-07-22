@@ -1,10 +1,9 @@
 run: install
 	jupyter notebook
-install: install_server install_nb
-install_server: clean
+install: clean
 	pip install -e .
-install_nb: clean
-	jupyter nbextension install jupygit
-	jupyter nbextension enable jupygit/index
+	jupyter serverextension enable --py jupygit --sys-prefix
+	jupyter nbextension install --py jupygit --sys-prefix
+	jupyter nbextension enable --py jupygit --sys-prefix
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +

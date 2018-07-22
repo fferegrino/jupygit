@@ -8,11 +8,21 @@ define([
     function make_request() {
         console.log("Cleaning notebook")
         var clean_url = utils.url_path_join(utils.get_body_data('baseUrl'), 'git/clean')
-        console.log("Querying", pizzaUrl)
-        $.getJSON(clean_url, function(data) {
-            console.log("Data: ", data)
-            dialog.modal(data)
-        })
+        console.log("Querying", Jupyter.notebook)
+        data = {
+            'name': Jupyter.notebook.notebook_name,
+            'path': Jupyter.notebook.notebook_path
+        }
+        console.log(data);
+        $.ajax({
+            type: "GET",
+            url: clean_url,
+            data: data,
+            success: function(data) {
+                console.log("Data: ", data)
+                dialog.modal(data)
+            }
+          });
     }
 
     function place_button() {
