@@ -16,8 +16,7 @@ class GitRestoreHandler(IPythonHandler):
         clean_path = dirty_path[:-len(self.file_suffix)] + ".ipynb"
         os.remove(clean_path)
 
-        self.write({'status':200,'content':'Hola'})
-        self.flush()
+        self.set_status(200)
 
 
 class GitCleanHandler(IPythonHandler):
@@ -39,8 +38,7 @@ class GitCleanHandler(IPythonHandler):
         with open(clean_path, "w") as w:
             json.dump(dirty, w, indent=1)
 
-        self.write({'status':200,'content':'Hola'})
-        self.flush()
+        self.set_status(200)
 
     def clean_nb(self, dirty, outputs_to_remove=[]):
         cells = dirty.get('cells', [])

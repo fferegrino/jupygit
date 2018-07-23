@@ -35,8 +35,23 @@ define([
                     url: clean_url,
                     data: data,
                     success: function(d) {
-                        alert("Now you can go ahead and commit your notebook! do not forget to press the button again when you are done")
-                        $("#jupygit-button span").text("Keep working");
+                        var d = dialog.modal(
+                            {
+                                backdrop:'static',
+                                keyboard:false, 
+                                show:true, 
+                                title: Jupyter.original_name  + ' is clean and ready to be committed', 
+                                body:'You can now go ahead and commit your notebook using your favourite git client. ' +
+                                    'Close this dialog after you are done to keep working on your notebook.',
+                                buttons: {
+                                    'Close': { 
+                                        class:'btn-primary btn-large'
+                                    }
+                                }
+                            });
+                        d.on('hidden.bs.modal', function () {
+                            make_request();
+                        })
                     }
                 });
             });
@@ -55,8 +70,6 @@ define([
                 success: function(d) {
                     Jupyter.notebook.rename(Jupyter.original_name).then(function (){
                         Jupyter.original_name = "";
-                        alert("You can now keep working");
-                        $("#jupygit-button span").text("Prepare notebook");
                     });
                 }
             });
@@ -84,7 +97,7 @@ define([
 
         Jupyter.toolbar.add_buttons_group([{
             id: 'jupygit-button',
-            label: 'Prepare notebook',
+            label: 'Prepare',
             icon: 'fa-git',
             help: 'Clean and prepare your notebook to be commited to Git',
             callback: make_request

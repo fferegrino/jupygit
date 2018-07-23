@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 # Package version
-VERSION = "0.1.2"
+VERSION = "0.2.0"
 
 class VerifyVersionCommand(install):
     """Custom command to verify that the git tag matches our version"""
@@ -29,7 +29,7 @@ setup(
     author="Antonio Feregrino",
     author_email="antonio.feregrino@gmail.com",
     version=VERSION,
-    description="Prepare your Notebooks to be pushed to GitHub",
+    description="Prepare your Notebooks to be pushed to Git",
     long_description=long_description,
     long_description_content_type="text/markdown",
     include_package_data=True,
