@@ -37,6 +37,7 @@ class GitCleanHandler(IPythonHandler):
 
         with open(clean_path, "w") as w:
             json.dump(dirty, w, indent=1)
+            w.write("\n") # Fix for the new line issue
 
         self.set_status(200)
 
