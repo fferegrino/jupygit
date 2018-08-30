@@ -16,7 +16,7 @@ define([
         var _xsrf = cookies["_xsrf"];
         var notebook_path = Jupyter.notebook.notebook_path;
 
-        if(Jupyter.original_name === "") {
+        if (Jupyter.original_name === "") {
             Jupyter.original_name = Jupyter.notebook.notebook_name;
             var new_name = Jupyter.original_name.substring(0, Jupyter.original_name.length - 6) + file_suffix
 
@@ -25,7 +25,7 @@ define([
                 'path': notebook_path
             }
 
-            Jupyter.notebook.rename(new_name).then(function (){
+            Jupyter.notebook.rename(new_name).then(function() {
                 // Duplicate notebook:
                 $.ajax({
                     type: "POST",
@@ -35,21 +35,20 @@ define([
                     url: clean_url,
                     data: data,
                     success: function(d) {
-                        var d = dialog.modal(
-                            {
-                                backdrop:'static',
-                                keyboard:false, 
-                                show:true, 
-                                title: Jupyter.original_name  + ' is clean and ready to be committed', 
-                                body:'You can now go ahead and commit your notebook using your favourite git client. ' +
-                                    'Close this dialog after you are done to keep working on your notebook.',
-                                buttons: {
-                                    'Close': { 
-                                        class:'btn-primary btn-large'
-                                    }
+                        var d = dialog.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true,
+                            title: Jupyter.original_name + ' is clean and ready to be committed',
+                            body: 'You can now go ahead and commit your notebook using your favourite git client. ' +
+                                'Close this dialog after you are done to keep working on your notebook.',
+                            buttons: {
+                                'Close': {
+                                    class: 'btn-primary btn-large'
                                 }
-                            });
-                        d.on('hidden.bs.modal', function () {
+                            }
+                        });
+                        d.on('hidden.bs.modal', function() {
                             make_request();
                         })
                     }
@@ -68,7 +67,7 @@ define([
                 url: restore_url,
                 data: data,
                 success: function(d) {
-                    Jupyter.notebook.rename(Jupyter.original_name).then(function (){
+                    Jupyter.notebook.rename(Jupyter.original_name).then(function() {
                         Jupyter.original_name = "";
                     });
                 }
@@ -79,15 +78,15 @@ define([
     function getCookies(cookie) {
         var dictionary = {};
         var parts = cookie.split(";")
-        
-        parts.forEach(function (s) {
-          var trimmed = s.trim();
-          var i = trimmed.indexOf("=");
-          dictionary[trimmed.slice(0, i)] = trimmed.slice(i + 1)
+
+        parts.forEach(function(s) {
+            var trimmed = s.trim();
+            var i = trimmed.indexOf("=");
+            dictionary[trimmed.slice(0, i)] = trimmed.slice(i + 1)
         });
-        
+
         return dictionary;
-      }
+    }
 
     function place_button() {
         if (!Jupyter.toolbar) {
@@ -106,11 +105,11 @@ define([
 
     function load_ipython_extension() {
         console.log("Loading");
-	    place_button();
+        place_button();
     }
 
     return {
-	    load_ipython_extension: load_ipython_extension
+        load_ipython_extension: load_ipython_extension
     };
 
 });

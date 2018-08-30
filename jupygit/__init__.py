@@ -2,6 +2,7 @@ from notebook.utils import url_path_join
 
 from .GitHandlers import GitCleanHandler, GitRestoreHandler
 
+
 def load_jupyter_server_extension(nb_server_app):
     web_app = nb_server_app.web_app
     host_pattern = '.*$'
@@ -12,6 +13,7 @@ def load_jupyter_server_extension(nb_server_app):
          GitRestoreHandler)
     ])
 
+
 def _jupyter_nbextension_paths():
     """Required to load JS button"""
     return [dict(
@@ -19,6 +21,7 @@ def _jupyter_nbextension_paths():
         src="static",
         dest="jupygit",
         require="jupygit/index")]
+
 
 def _jupyter_server_extension_paths():
     return [{
