@@ -1,4 +1,4 @@
-def clean_nb(self, dirty, outputs_to_remove=[]):
+def clean_nb(dirty, outputs_to_remove=[]):
     cells = dirty.get('cells', [])
     to_remove = set(outputs_to_remove)
     for cell in cells:

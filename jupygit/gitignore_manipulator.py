@@ -1,5 +1,9 @@
-def add_gitignore_entry(self, path):
-    suffix = "*" + self.file_suffix
+import os
+
+file_suffix = "-jupygit___.ipynb"
+
+def add_gitignore_entry(path):
+    suffix = "*" + file_suffix
     gitignore_path = os.path.join(path, ".gitignore")
     if not os.path.exists(gitignore_path):
         with open(gitignore_path, "w") as w:
