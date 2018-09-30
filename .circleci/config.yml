@@ -16,7 +16,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "setup.py" }}
+          - v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
 
       - run:
           name: install dependencies
@@ -29,7 +29,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}
+          key: v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
 
 
   deploy:
@@ -39,7 +39,7 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
 
       - run:
           name: install python dependencies
@@ -50,7 +50,7 @@ jobs:
             make test
 
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
           paths:
             - "venv"
 
@@ -72,7 +72,7 @@ jobs:
           name: create packages
           command: |
             make package
-            
+
       - run:
           name: upload to pypi
           command: |
