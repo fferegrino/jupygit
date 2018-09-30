@@ -24,11 +24,13 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             make dev
+            make test
 
       - save_cache:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "setup.py" }}
+
 
   deploy:
     docker:
@@ -45,6 +47,8 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             make dev
+            make test
+
       - save_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}
           paths:
@@ -56,16 +60,19 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             python setup.py verify
+
       - run:
           name: init .pypirc
           command: |
             echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = io_exception" >> ~/.pypirc
             echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
+
       - run:
           name: create packages
           command: |
             make package
+            
       - run:
           name: upload to pypi
           command: |
