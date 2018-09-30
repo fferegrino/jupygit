@@ -19,14 +19,14 @@ jobs:
           - v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
 
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             make dev
             
       - run:
-          name: run some tests
+          name: Run some tests
           command: |
             python3 -m venv venv
             . venv/bin/activate
@@ -48,14 +48,14 @@ jobs:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
 
       - run:
-          name: install python dependencies
+          name: Install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
             make dev
 
       - run:
-          name: run some tests
+          name: Run some tests
           command: |
             python3 -m venv venv
             . venv/bin/activate
@@ -67,7 +67,7 @@ jobs:
             - "venv"
 
       - run:
-          name: verify git tag vs. version
+          name: Verify git tag vs. version
           command: |
             python3 -m venv venv
             . venv/bin/activate
