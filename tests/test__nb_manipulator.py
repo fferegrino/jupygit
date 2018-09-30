@@ -196,3 +196,6 @@ def test__nb_cleaner_preserve():
   clean = json.loads(preserve_clean)
   clean_nb(dirty)
   assert dirty == clean
+
+def test_this_fails():
+  assert 1 == 2
