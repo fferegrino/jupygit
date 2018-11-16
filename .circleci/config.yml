@@ -16,7 +16,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
+          - v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
 
       - run:
           name: Install dependencies
@@ -35,7 +35,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
+          key: v1-dependencies-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
 
 
   deploy:
@@ -45,33 +45,27 @@ jobs:
       - checkout
 
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
 
       - run:
           name: Install dependencies
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            make dev
+            pipenv install --dev
 
       - run:
           name: Run some tests
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            make test
+            pipenv run pytest -svvv
 
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "requirements.txt" }}
+          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
           paths:
             - "venv"
 
       - run:
           name: Verify git tag vs. version
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            python setup.py verify
+            pipenv run python setup.py verify
 
       - run:
           name: init .pypirc
@@ -83,13 +77,13 @@ jobs:
       - run:
           name: create packages
           command: |
-            make package
+            pipenv run python setup.py sdist
+            pipenv run python setup.py bdist_wheel
 
       - run:
           name: upload to pypi
           command: |
-            . venv/bin/activate
-            twine upload dist/*
+            pipenv run twine upload dist/*
             
 workflows:
   version: 2
