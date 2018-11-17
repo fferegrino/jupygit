@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Run some tests
           command: |
-            pipenv run pytest -svvv
+            PYTHONPATH=. pipenv run pytest -svvv
 
       - save_cache:
           paths:
@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Run some tests
           command: |
-            pipenv run pytest -svvv
+            PYTHONPATH=. pipenv run pytest -svvv
 
       - save_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
