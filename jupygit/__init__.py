@@ -1,6 +1,6 @@
 from notebook.utils import url_path_join
 
-from .GitHandlers import GitCleanHandler, GitRestoreHandler
+from .GitHandlers import GitCleanHandler, GitRestoreHandler, GitCheckRecoveryHandler
 
 
 def load_jupyter_server_extension(nb_server_app):
@@ -10,7 +10,9 @@ def load_jupyter_server_extension(nb_server_app):
         (url_path_join(web_app.settings['base_url'], r'/git/clean'),
          GitCleanHandler),
         (url_path_join(web_app.settings['base_url'], r'/git/restore'),
-         GitRestoreHandler)
+         GitRestoreHandler),
+        (url_path_join(web_app.settings['base_url'], r'/git/check'),
+         GitCheckRecoveryHandler)
     ])
 
 

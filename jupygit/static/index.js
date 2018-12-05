@@ -9,11 +9,24 @@ define([
 
     Jupyter.original_name = "";
 
+    function getCookies(cookie) {
+        var dictionary = {};
+        var parts = cookie.split(";")
+
+        parts.forEach(function(s) {
+            var trimmed = s.trim();
+            var i = trimmed.indexOf("=");
+            dictionary[trimmed.slice(0, i)] = trimmed.slice(i + 1)
+        });
+
+        return dictionary;
+    }
+
     function make_request() {
         var clean_url = utils.url_path_join(utils.get_body_data('baseUrl'), 'git/clean')
         var restore_url = utils.url_path_join(utils.get_body_data('baseUrl'), 'git/restore')
+
         var cookies = getCookies(document.cookie);
-        var _xsrf = cookies["_xsrf"];
         var notebook_path = Jupyter.notebook.notebook_path;
 
         if (Jupyter.original_name === "") {
@@ -52,7 +65,7 @@ define([
                             make_request();
                         })
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function(jqXHR, textStatus, errorThrown) {
                         Jupyter.notebook.rename(Jupyter.original_name).then(function() {
                             Jupyter.original_name = "";
                             alert("Something went wrong while cleaning your notebook");
@@ -81,19 +94,6 @@ define([
         }
     }
 
-    function getCookies(cookie) {
-        var dictionary = {};
-        var parts = cookie.split(";")
-
-        parts.forEach(function(s) {
-            var trimmed = s.trim();
-            var i = trimmed.indexOf("=");
-            dictionary[trimmed.slice(0, i)] = trimmed.slice(i + 1)
-        });
-
-        return dictionary;
-    }
-
     function place_button() {
         if (!Jupyter.toolbar) {
             $([Jupyter.events]).on("app_initialized.NotebookApp", place_button);
@@ -109,9 +109,33 @@ define([
         }])
     }
 
+    function check_recovery() {
+
+        var check_url = utils.url_path_join(utils.get_body_data('baseUrl'), 'git/check?name=%s&path=%s');
+        var cookies = getCookies(document.cookie);
+
+        $.ajax({
+            type: "GET",
+            data: {
+                name: Jupyter.notebook.notebook_name,
+                path: Jupyter.notebook.notebook_path
+            },
+            headers: {
+                "X-XSRFToken": cookies["_xsrf"]
+            },
+            success: function(d) {
+                if (d['try_to_recover']) {
+                    alert('Try to recover!');
+                }
+            },
+            url: check_url
+        });
+    }
+
     function load_ipython_extension() {
-        console.log("Loading");
+        console.log("Loaded Jupygit");
         place_button();
+        check_recovery();
     }
 
     return {
