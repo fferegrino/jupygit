@@ -51,6 +51,12 @@ define([
                         d.on('hidden.bs.modal', function() {
                             make_request();
                         })
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        Jupyter.notebook.rename(Jupyter.original_name).then(function() {
+                            Jupyter.original_name = "";
+                            alert("Something went wrong while cleaning your notebook");
+                        });
                     }
                 });
             });
