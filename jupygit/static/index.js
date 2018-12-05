@@ -125,7 +125,29 @@ define([
             },
             success: function(d) {
                 if (d['try_to_recover']) {
-                    alert('Try to recover!');
+
+
+                        var modal = dialog.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true,
+                            title: Jupyter.notebook.notebook_name + ' seems dirty!',
+                            body: 'Do you want to restore your notebook\'s name?',
+                            buttons: {
+                                'Recover' : {
+                                    class: 'btn-primary btn-large',
+                                    click: function () {
+                                        nbname = Jupyter.notebook.notebook_name;
+                                        Jupyter.original_name = nbname.substring(0, nbname.length - file_suffix.length);
+                                        make_request();
+                                    }
+                                },
+                                'Close': {
+                                    class: 'btn-default btn-large'
+                                }
+                            }
+                        });
+
                 }
             },
             url: check_url
