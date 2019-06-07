@@ -276,3 +276,9 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/macos,python,windows,pycharm+all,jupyternotebook
 .idea/vcs.xml
+
+*.bundle.*
+lib/
+node_modules/
+*.egg-info/
+.ipynb_checkpoints
